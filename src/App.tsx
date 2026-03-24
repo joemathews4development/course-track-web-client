@@ -5,6 +5,7 @@ import CoursesPage from "./pages/CoursesPage"
 import StudentsPage from "./pages/StudentsPage"
 import Footer from "./components/Footer"
 import CourseDetails from "./pages/CourseDetailsPage"
+import StudentDetailsPage from "./pages/StudentDetailsPage"
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
             <Route path="/courses" element={<CoursesPage/>}/>
             <Route path="/students" element={<StudentsPage/>}/>
             <Route path="/courses/:courseId" element={<CourseDetails/>} />
+            <Route path="/students/:studentId" element={<StudentDetailsPage/>} />
           </Routes>
         </div>
         <Footer className="flex-shrink-0" />

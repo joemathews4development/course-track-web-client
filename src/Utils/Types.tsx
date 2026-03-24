@@ -2,7 +2,7 @@ export type Course = {
     id: string,
     title: string,
     description?: string,
-    start: Date,
+    start: string,
     image?: string
 }
 
@@ -23,3 +23,5 @@ export type Enrollment = {
 }
 
 export type GraduationStatus = "PASSED" | "FAILED" | "ONGOING"
+
+export const DEFAULT_IMAGE = "https://via.placeholder.com/150?text=Profile"
