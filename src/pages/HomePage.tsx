@@ -4,7 +4,8 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import { FaBook, FaUsers, FaClipboardList } from "react-icons/fa";
 import type { Course } from "../Utils/Types"
 import Loader from "../components/Loader"
-import UpcomingCoursesList from "../components/UpcomingCoursesList";
+import UpcomingCoursesList from "../components/UpcomingCoursesList"
+import { useToast } from "../context/toast.context"
 
 type Result = {
   courses: number
@@ -17,6 +18,8 @@ function HomePage() {
 
     const [specs, setSpecs] = useState<Result | null>(null)
 
+    const { showToast } = useToast()
+
     useEffect(() => {
         loadData()
     }, [])
@@ -24,10 +27,10 @@ function HomePage() {
     const loadData = async () => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/specs`)
-            console.log(response)
             setSpecs(response.data)
         } catch (error) {
             console.log(error)
+            showToast(`Failed loading dashboard data: ${error}`, "error")
         }
     }
     
@@ -65,9 +68,9 @@ function HomePage() {
             {/* Upcoming */}
             <Row className="g-4 justify-content-center">
               <Col xs={12}>
-                  <Card className="shadow-lg text-center p-4 h-100 border border-dark rounded-4">
-  <UpcomingCoursesList courses={specs.upcomingCourses} />
-</Card>
+                    <Card className="shadow-lg text-center p-4 h-100 border border-dark rounded-4">
+                        <UpcomingCoursesList courses={specs.upcomingCourses} />
+                    </Card>
               </Col>
             </Row>
         </Container>

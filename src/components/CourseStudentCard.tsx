@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Badge, Button, Card, Col, Form } from "react-bootstrap"
+import { useToast } from "../context/toast.context"
 
 type props = {
     enrollment: Enrollment,
@@ -26,6 +27,8 @@ function CourseStudentCard({ enrollment, loadData }: props) {
         graduationDate: enrollment.graduationDate ? enrollment.graduationDate.split("T")[0] : "",
     })
     const [isDirty, setIsDirty] = useState(false)
+
+    const { showToast } = useToast()
 
   // Detect changes
     useEffect(() => {
@@ -55,8 +58,10 @@ function CourseStudentCard({ enrollment, loadData }: props) {
             }
             await axios.patch(`${import.meta.env.VITE_SERVER_URL}/api/enrollments/${enrollment.id}`, body)
             loadData()
+            showToast(`Successfully updated student graduation status`, "success")
         } catch (error) {
             console.error(error)
+            showToast(`Failed updating student graduation status: ${error}`, "error")
         }
     }
 
@@ -64,8 +69,10 @@ function CourseStudentCard({ enrollment, loadData }: props) {
         try {
             await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/enrollments/${enrollment.id}`)
             loadData()
+            showToast(`Successfully removed student from this course`, "success")
         } catch (error) {
             console.error(error)
+            showToast(`Failed removing student from this course: ${error}`, "error")
         }
     }
 

@@ -6,6 +6,7 @@ import SearchBar from "../components/Searchbar"
 import { useNavigate } from "react-router-dom"
 import { DEFAULT_IMAGE } from "../Utils/Types"
 import AddStudentModal from "../components/AddStudentModelComponent"
+import { useToast } from "../context/toast.context"
 
 type Student = {
     id: number
@@ -20,6 +21,8 @@ function StudentsPage() {
     const [search, setSearch] = useState("")
     const [showModal, setShowModal] = useState(false)
 
+    const { showToast } = useToast()
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -32,6 +35,7 @@ function StudentsPage() {
             setStudents(response.data)
         } catch (error) {
             console.log(error)
+            showToast(`Failed loading students: ${error}`, "error")
         }
     }
 
@@ -39,8 +43,10 @@ function StudentsPage() {
         try {
             await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/students`, data)
             loadData()
+            showToast(`Successfully created a new student`, "success")
         } catch (error) {
             console.log(error)
+            showToast(`Failed creating a new student: ${error}`, "error")
         }
     }
 

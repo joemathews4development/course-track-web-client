@@ -5,6 +5,7 @@ import Loader from "../components/Loader"
 import axios from "axios"
 import SearchBar from "../components/Searchbar"
 import CourseModal from "../components/AddNewCourseModalComponent"
+import { useToast } from "../context/toast.context"
 
 type Course = {
     id: number
@@ -21,6 +22,8 @@ function CoursesPage() {
     const [search, setSearch] = useState("")
     const [showModal, setShowModal] = useState(false)
 
+    const { showToast } = useToast()
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -32,7 +35,8 @@ function CoursesPage() {
           const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/courses`)
           setCourses(response.data)
         } catch (error) {
-          console.log(error);
+          console.log(error)
+          showToast(`Failed loading courses: ${error}`, "error")
         }
     }
 
@@ -40,8 +44,10 @@ function CoursesPage() {
         try {
             await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/courses`, data)
             loadData()
+            showToast("Successfully created new course", "success")
         } catch (error) {
             console.log(error)
+            showToast(`Failed adding new course: ${error}`, "error")
         }      
     }
 

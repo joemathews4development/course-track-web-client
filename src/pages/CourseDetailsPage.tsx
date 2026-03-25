@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Container, Card, Row, Col, Form } from "react-bootstrap";
-import { Button } from "react-bootstrap";
-import axios from "axios";
-import CourseStudentCard from "../components/CourseStudentCard";
-import Loader from "../components/Loader";
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { Container, Card, Row, Col, Form } from "react-bootstrap"
+import { Button } from "react-bootstrap"
+import axios from "axios"
+import CourseStudentCard from "../components/CourseStudentCard"
+import Loader from "../components/Loader"
+import { useToast } from "../context/toast.context"
 
 // Types
 type Enrollment = {
@@ -29,12 +30,14 @@ type Course = {
 type FilterType = "ALL" | "PASSED" | "FAILED" | "ONGOING"
 
 function CourseDetails() {
-    const { courseId } = useParams();
-    const [course, setCourse] = useState<Course | null>(null);
-    const [search, setSearch] = useState("");
+    const { courseId } = useParams()
+    const [course, setCourse] = useState<Course | null>(null)
+    const [search, setSearch] = useState("")
     const [filter, setFilter] = useState<FilterType>("ALL")
-    const [allStudents, setAllStudents] = useState<any[]>([]);
+    const [allStudents, setAllStudents] = useState<any[]>([])
     const [selectedStudent, setSelectedStudent] = useState("")
+
+    const { showToast } = useToast()
 
     const [formData, setFormData] = useState({
         title: course?.title ?? "",
@@ -62,6 +65,7 @@ function CourseDetails() {
             })
         } catch (error) {
             console.log(error)
+            showToast(`Failed loading course details: ${error}`, "error")
         }
     }
 
@@ -75,8 +79,10 @@ function CourseDetails() {
             await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/enrollments`, body)
             loadData()
             setSelectedStudent("")
+            showToast(`Successfully added a student to course`, "success")
         } catch (error) {
             console.error(error)
+            showToast(`Failed adding student to course: ${error}`, "error")
         }
     }
 
@@ -97,8 +103,10 @@ function CourseDetails() {
             }
             await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/courses/${courseId}`, body)
             loadData()
+            showToast(`Successfully updated course details`, "success")
         } catch (error) {
             console.error(error)
+            showToast(`Failed updating course details: ${error}`, "error")
         }
     }
 

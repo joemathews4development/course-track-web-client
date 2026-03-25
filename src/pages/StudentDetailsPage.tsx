@@ -3,12 +3,15 @@ import { Card, Form, Button, Row, Col, Badge, Spinner, Image } from "react-boots
 import axios from "axios"
 import { useParams } from "react-router-dom"
 import { DEFAULT_IMAGE } from "../Utils/Types"
+import { useToast } from "../context/toast.context"
 
 function StudentDetailsPage() {
-    const [student, setStudent] = useState<any>(null);
-    const [formData, setFormData] = useState({ name: "", email: "" });
-    const [isDirty, setIsDirty] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [student, setStudent] = useState<any>(null)
+    const [formData, setFormData] = useState({ name: "", email: "" })
+    const [isDirty, setIsDirty] = useState(false)
+    const [loading, setLoading] = useState(true)
+
+    const { showToast } = useToast()
 
     const { studentId } = useParams()
 
@@ -26,6 +29,7 @@ function StudentDetailsPage() {
             })
         } catch (error) {
             console.log(error)
+            showToast(`Failed loading student details: ${error}`, "error")
         } finally {
             setLoading(false)
         }
@@ -50,16 +54,20 @@ function StudentDetailsPage() {
             await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/students/${studentId}`, formData)
             setStudent((prev: any) => ({ ...prev, ...formData }))
             setIsDirty(false)
+            showToast(`Successfully updated student details`, "success")
         } catch (error) {
             console.log(error)
+            showToast(`Failed updating student details: ${error}`, "error")
         }
     }
 
     const handleDelete = async () => {
         try {
             await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/students/${studentId}`)
+            showToast(`Successfully deleted student`, "success")
         } catch (error) {
             console.log(error)
+            showToast(`Failed deleting a student: ${error}`, "error")
         }
     }
 
