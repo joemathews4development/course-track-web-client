@@ -37,13 +37,6 @@ function CoursesPage() {
     }
 
     const handleSave = async (data: {title: string, description: string, start: string}) => {
-        const date = new Date(data.start + "T00:00:000Z")
-        const body = {
-            title: data.title,
-            description: data.description,
-            start: date
-        }
-        console.log(data)
         try {
             await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/courses`, data)
             loadData()

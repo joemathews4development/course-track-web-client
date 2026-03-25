@@ -36,4 +36,4 @@ function UpcomingCoursesList({ courses }: { courses: Course[] }) {
     )
 }
 
-export default UpcomingCoursesList;
+export default UpcomingCoursesList
