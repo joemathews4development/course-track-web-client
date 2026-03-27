@@ -6,6 +6,7 @@ import axios from "axios"
 import CourseStudentCard from "../components/CourseStudentCard"
 import Loader from "../components/Loader"
 import { useToast } from "../context/toast.context"
+import { getFormattedInputDate } from "../Utils/Constants"
 
 // Types
 type Enrollment = {
@@ -90,7 +91,7 @@ function CourseDetails() {
         const { name, value } = e.target
         setFormData((prev) => ({
           ...prev,
-          [name]: value,
+          [name]: name === "start" ? new Date(value).toISOString() : value,
         }))
     }
 
@@ -101,6 +102,7 @@ function CourseDetails() {
               description: formData.description,
               start: formData.start,
             }
+            console.log(body)
             await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/courses/${courseId}`, body)
             loadData()
             showToast(`Successfully updated course details`, "success")
@@ -142,8 +144,8 @@ function CourseDetails() {
                                 {/* Start Date */}
                                 <Form.Group className="mb-3">
                                     <Form.Label>Start Date</Form.Label>
-                                    <Form.Control type="date" name="start"
-                                      value={formData.start.split("T")[0]} onChange={handleChange}
+                                    <Form.Control type="datetime-local" name="start"
+                                      value={getFormattedInputDate(formData.start)} onChange={handleChange}
                                     />
                                 </Form.Group>
                                 {/* Description (multiline) */}

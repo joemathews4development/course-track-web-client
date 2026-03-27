@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Badge, Button, Card, Col, Form } from "react-bootstrap"
 import { useToast } from "../context/toast.context"
+import { getFormattedInputDate } from "../Utils/Constants";
 
 type props = {
     enrollment: Enrollment,
@@ -43,9 +44,12 @@ function CourseStudentCard({ enrollment, loadData }: props) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
+        console.log(name)
+        console.log(value)
+        console.log(new Date(value).toISOString())
         setFormData((prev) => ({
             ...prev,
-            [name]: value,
+            [name]: name === "graduationDate" ? new Date(value).toISOString() : value,
         }))
     }
 
@@ -98,9 +102,9 @@ function CourseStudentCard({ enrollment, loadData }: props) {
                     <Form.Group className="mb-2">
                         <Form.Label>Graduation Date</Form.Label>
                         <Form.Control
-                            type="date"
+                            type="datetime-local"
                             name="graduationDate"
-                            value={formData.graduationDate}
+                            value={getFormattedInputDate(formData.graduationDate)}
                             onChange={handleChange}
                         />
                     </Form.Group>

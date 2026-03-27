@@ -13,7 +13,7 @@ export const getFormattedInputDate = (isoDate: string) => {
     if (!isoDate) return ""
     const dateObj = new Date(isoDate)
     const pad = (num: number) => num.toString().padStart(2, "0")
-    return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}`
+    return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}T${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`
 }
 
 /**
@@ -31,6 +31,8 @@ export const displayableDateTime = (isoDate: string) => {
     return new Date(isoDate).toLocaleString("en-US", {
         year: "numeric",
         month: "long",
-        day: "numeric"
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
     })
 }
