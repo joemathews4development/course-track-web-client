@@ -125,6 +125,11 @@ function CourseDetails() {
         const matchesFilter = filter === "ALL" || enrollment.graduationStatus === filter
         return matchesSearch && matchesFilter
     })
+    .sort((a, b) => {
+        return a.student.name
+        .toLowerCase()
+        .localeCompare(b.student.name.toLowerCase());
+    })
 
     return (
         <Container className="mt-4">

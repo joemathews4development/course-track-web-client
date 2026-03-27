@@ -44,9 +44,6 @@ function CourseStudentCard({ enrollment, loadData }: props) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        console.log(name)
-        console.log(value)
-        console.log(new Date(value).toISOString())
         setFormData((prev) => ({
             ...prev,
             [name]: name === "graduationDate" ? new Date(value).toISOString() : value,
@@ -61,6 +58,7 @@ function CourseStudentCard({ enrollment, loadData }: props) {
                 graduationDate: formData.graduationDate
             }
             await axios.patch(`${import.meta.env.VITE_SERVER_URL}/api/enrollments/${enrollment.id}`, body)
+            setIsDirty(true)
             loadData()
             showToast(`Successfully updated student graduation status`, "success")
         } catch (error) {
