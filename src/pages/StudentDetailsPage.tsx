@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Card, Form, Button, Row, Col, Badge, Spinner, Image } from "react-bootstrap"
+import { Card, Form, Button, Row, Col, Badge, Image } from "react-bootstrap"
 import axios from "axios"
 import { useParams } from "react-router-dom"
 import { DEFAULT_IMAGE } from "../Utils/Types"
