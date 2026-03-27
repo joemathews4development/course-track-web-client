@@ -4,6 +4,7 @@ import axios from "axios"
 import { useParams } from "react-router-dom"
 import { DEFAULT_IMAGE } from "../Utils/Types"
 import { useToast } from "../context/toast.context"
+import Loader from "../components/Loader"
 
 function StudentDetailsPage() {
     const [student, setStudent] = useState<any>(null)
@@ -71,7 +72,7 @@ function StudentDetailsPage() {
         }
     }
 
-    if (loading) return <Spinner animation="border" />
+    if (loading) return <Loader />
     if (!student) return <div>Student not found</div>
 
     const canDelete = student.courses.length === 0
