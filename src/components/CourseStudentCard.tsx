@@ -52,13 +52,15 @@ function CourseStudentCard({ enrollment, loadData }: props) {
 
     const handleSave = async () => {
         if (!isDirty) return
+        console.log(isDirty)
         try {
             const body = {
                 graduationStatus: formData.graduationStatus,
                 graduationDate: formData.graduationDate
             }
             await axios.patch(`${import.meta.env.VITE_SERVER_URL}/api/enrollments/${enrollment.id}`, body)
-            setIsDirty(true)
+            setIsDirty(false)
+            console.log(isDirty)
             loadData()
             showToast(`Successfully updated student graduation status`, "success")
         } catch (error) {

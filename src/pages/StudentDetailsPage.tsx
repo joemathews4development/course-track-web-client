@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Card, Form, Button, Row, Col, Badge, Image } from "react-bootstrap"
 import axios from "axios"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { DEFAULT_IMAGE } from "../Utils/Types"
 import { useToast } from "../context/toast.context"
 import Loader from "../components/Loader"
@@ -11,6 +11,8 @@ function StudentDetailsPage() {
     const [formData, setFormData] = useState({ name: "", email: "" })
     const [isDirty, setIsDirty] = useState(false)
     const [loading, setLoading] = useState(true)
+
+    const navigate = useNavigate()
 
     const { showToast } = useToast()
 
@@ -65,6 +67,7 @@ function StudentDetailsPage() {
     const handleDelete = async () => {
         try {
             await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/students/${studentId}`)
+            navigate(`/students`)
             showToast(`Successfully deleted student`, "success")
         } catch (error) {
             console.log(error)
